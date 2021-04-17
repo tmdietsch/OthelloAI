@@ -1,0 +1,49 @@
+Board():
+	-Int size
+	-Int white
+	-Int black
+	-Int numWhite
+	-Int numBlacks
+	
+	-Int[][] board
+	Hashmap validMoves // x is the key, y is the vlaue
+	
+	+Constructor()
+	+CopyConstructor()
+	
+	+Move(int width, int height, bool isWhite) //put piece into an empty spot
+	+isValidMove(int width, int height, bool isWhite)
+	-flipPieces()
+	+int getNumWhites()
+	+int getNumBlacks
+	+bool isBoardFull()
+	+Hashmap getValidMoves()
+	+PrintBoard()
+	
+	
+Game():
+
+	-Controller player1
+	-Controller player2
+	-Board board
+	
+	-boolean turn //true means player1 and false means player two
+	
+	+Game(Controller p1, Controller p2)
+	+play()
+	
+Controller():
+	
+	+Controller()
+	
+	+makeMove()
+	
+Player(): extends Controller
+
+ -getInput()
+
+AI(): extends Controller
+
+ -minMaxSearch()
+-Min()
+-Max()
