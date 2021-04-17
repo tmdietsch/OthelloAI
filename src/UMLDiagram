@@ -11,17 +11,17 @@ Board():
 	+Constructor()
 	+CopyConstructor()
 	
-	+Move(int width, int height, bool isWhite) //put piece into an empty spot
-	+isValidMove(int width, int height, bool isWhite)
-	-flipPieces()
+	+Move(int width, int height, bool isWhite) //put piece into an empty spot //Tim
+	+isValidMove(int width, int height, bool isWhite) //Carly
+	-flipPieces() //Tim
 	+int getNumWhites()
 	+int getNumBlacks
 	+bool isBoardFull()
 	+Hashmap getValidMoves()
-	+PrintBoard()
+	+PrintBoard() //Carly
 	
 	
-Game():
+Game(): //Carly
 
 	-Controller player1
 	-Controller player2
@@ -32,13 +32,13 @@ Game():
 	+Game(Controller p1, Controller p2)
 	+play()
 	
-Controller():
+Controller(): //Tim
 	
 	+Controller()
 	
 	+makeMove()
 	
-Player(): extends Controller
+Player(): extends Controller //Tim
 
  -getInput()
 
