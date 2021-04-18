@@ -217,6 +217,10 @@ public class Board {
 		
 	}
 	
+	public boolean isFull() {
+		return false;
+	}
+	
 	public void printBoard() {
 		System.out.println("   0 1 2 3 4 5 6 7");
 		for(int i = 0; i < BOARD_SIZE; i++) {
