@@ -6,6 +6,7 @@ public class Board {
 	private final int BOARD_SIZE = 8;
 	private final int WHITE = 0;
 	private final int BLACK = 1;
+	private final int EMPTY = -1;
 	private int numWhite;
 	private int numBlack;
 	
@@ -18,7 +19,7 @@ public class Board {
 		
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			for(int j = 0; j < BOARD_SIZE; j++) {
-				board[i][j] = -1;
+				board[i][j] = EMPTY;
 			}
 		}
 		
@@ -214,6 +215,27 @@ public class Board {
 		
 		board[width][height] = isWhite ? WHITE : BLACK;
 		
+	}
+	
+	public void printBoard() {
+		System.out.println("   0 1 2 3 4 5 6 7");
+		for(int i = 0; i < BOARD_SIZE; i++) {
+			System.out.print(i + " |");
+			for(int j = 0; j < BOARD_SIZE; j++) {
+				switch(board[j][i]) {
+				case(WHITE):
+					System.err.print("O");
+					System.out.print("|");
+					break;
+				case(BLACK):
+					System.out.print("O|");
+					break;
+				default:
+					System.out.print(" |");
+				}
+			}
+			System.out.println();
+		}
 	}
 	
 }
