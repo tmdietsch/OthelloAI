@@ -226,6 +226,12 @@ public class Board {
 		
 		if (isValidMove(width, height, isWhite)) {
 			board[width][height] = isWhite ? WHITE : BLACK;
+			if(isWhite) {
+				numWhite++;
+			}
+			else {
+				numBlack++;
+			}
 			flipPieces(width, height);
 		}
 		else {
@@ -238,18 +244,29 @@ public class Board {
 		return (numWhite + numBlack == BOARD_SIZE * BOARD_SIZE);
 	}
 	
+	public int getNumWhite() {
+		return numWhite;
+	}
+	
+	public int getNumBlack() {
+		return numBlack;
+	}
+	
 	private void flipPieces(int width, int height) {
 		
 		int samePiece;
 		int oppositePiece;
+		boolean isWhite;
 		
 		if (board[width][height] == 0) {
 			samePiece = 0;
 			oppositePiece = 1;
+			isWhite = true;
 		}
 		else {
 			samePiece = 1;
 			oppositePiece = 0;
+			isWhite = false;
 		}
 		
 		for (int i = -1; i <= 1; i++) {
@@ -272,6 +289,14 @@ public class Board {
 							
 							board[width + (i * distance)][height + (j * distance)] = samePiece;
 							distance--;
+							if(isWhite) {
+								numWhite++;
+								numBlack--;
+							}
+							else {
+								numWhite--;
+								numBlack++;
+							}
 							
 						}
 						
@@ -288,7 +313,10 @@ public class Board {
 	}
 	
 	public void printBoard() {
-		System.out.println("   0 1 2 3 4 5 6 7");
+		System.out.println("White score: " + getNumWhite());
+		System.out.println("Black score: " + getNumBlack());
+		
+		System.out.println("\n   0 1 2 3 4 5 6 7");
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			System.out.print(i + " |");
 			for(int j = 0; j < BOARD_SIZE; j++) {
