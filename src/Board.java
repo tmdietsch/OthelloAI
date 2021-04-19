@@ -16,6 +16,7 @@ public class Board {
 	Board() {
 		
 		board = new int[BOARD_SIZE][BOARD_SIZE];
+		validMoves = new HashMap<Integer, ArrayList<Integer>>();
 		
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			for(int j = 0; j < BOARD_SIZE; j++) {
@@ -32,11 +33,21 @@ public class Board {
 		numWhite = 2;
 		numBlack = 2;
 		
-		validMoves = new HashMap<Integer, ArrayList<Integer>>();
-		
 	}
 	
-	Board(Board original){
+	Board(Board orig){
+		
+		board = new int[BOARD_SIZE][BOARD_SIZE];
+		validMoves = new HashMap<Integer, ArrayList<Integer>>();
+		
+		for(int i = 0; i < BOARD_SIZE; i++) {
+			for(int j = 0; j < BOARD_SIZE; j++) {
+				board[i][j] = orig.board[i][j];
+			}
+		}
+		
+		numWhite = orig.numWhite;
+		numBlack = orig.numBlack;
 		
 	}
 	
@@ -213,12 +224,67 @@ public class Board {
 	
 	public void move(int width, int height, boolean isWhite) {
 		
-		board[width][height] = isWhite ? WHITE : BLACK;
+		if (isValidMove(width, height, isWhite)) {
+			board[width][height] = isWhite ? WHITE : BLACK;
+			flipPieces(width, height);
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
 		
 	}
 	
 	public boolean isFull() {
-		return false;
+		return (numWhite + numBlack == BOARD_SIZE * BOARD_SIZE);
+	}
+	
+	private void flipPieces(int width, int height) {
+		
+		int samePiece;
+		int oppositePiece;
+		
+		if (board[width][height] == 0) {
+			samePiece = 0;
+			oppositePiece = 1;
+		}
+		else {
+			samePiece = 1;
+			oppositePiece = 0;
+		}
+		
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				
+				int distance = 1;
+				
+				try {
+					
+					while(board[width + (i * distance)][height + (j * distance)] == oppositePiece) {
+						
+						distance++;
+						
+					}
+					
+					if (board[width + (i * distance)][height + (j * distance)] == samePiece) {
+						
+						distance--;
+						while (distance != 0) {
+							
+							board[width + (i * distance)][height + (j * distance)] = samePiece;
+							distance--;
+							
+						}
+						
+						
+					}
+					
+				}
+				catch (ArrayIndexOutOfBoundsException e) {}
+				
+			}
+			
+		}
+		
 	}
 	
 	public void printBoard() {
@@ -228,7 +294,7 @@ public class Board {
 			for(int j = 0; j < BOARD_SIZE; j++) {
 				switch(board[j][i]) {
 				case(WHITE):
-					System.err.print("O");
+					System.out.print("X");
 					System.out.print("|");
 					break;
 				case(BLACK):

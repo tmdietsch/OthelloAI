@@ -16,18 +16,19 @@ public class Game {
 		board.printBoard();
 		
 		boolean notDone = board.isFull();
-		while(notDone) {
+		while(!notDone) {
 			if(p1Turn) {
-				player1.makeMove();
+				player1.makeMove(board);
 			}
 			else {
-				player2.makeMove();
+				player2.makeMove(board);
 			}
 			System.out.println("\n");
 			board.printBoard();
 			p1Turn = !p1Turn;
 			notDone = board.isFull();
 		}
+		
 	}
 	
 }
