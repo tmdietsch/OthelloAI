@@ -11,12 +11,13 @@ public class Board {
 	private int numBlack;
 	
 	private int[][] board;
-	HashMap<Integer, ArrayList<Integer>> validMoves;
+	//HashMap<Integer, ArrayList<Integer>> validMoves;
+	ArrayList<Integer[]> validMoves;
 	
 	Board() {
 		
 		board = new int[BOARD_SIZE][BOARD_SIZE];
-		validMoves = new HashMap<Integer, ArrayList<Integer>>();
+		validMoves = new ArrayList<Integer[]>();
 		
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			for(int j = 0; j < BOARD_SIZE; j++) {
@@ -33,12 +34,14 @@ public class Board {
 		numWhite = 2;
 		numBlack = 2;
 		
+		updateValidMoves(true);
+		
 	}
 	
 	Board(Board orig){
 		
 		board = new int[BOARD_SIZE][BOARD_SIZE];
-		validMoves = new HashMap<Integer, ArrayList<Integer>>();
+		validMoves = new ArrayList<Integer[]>();//new HashMap<Integer, ArrayList<Integer>>();
 		
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			for(int j = 0; j < BOARD_SIZE; j++) {
@@ -49,6 +52,11 @@ public class Board {
 		numWhite = orig.numWhite;
 		numBlack = orig.numBlack;
 		
+	}
+	
+	public ArrayList<Integer[]> getValidMoves() {
+		
+		return validMoves;
 	}
 	
 	public boolean isValidMove(int width, int height, boolean isWhite){
@@ -233,6 +241,8 @@ public class Board {
 				numBlack++;
 			}
 			flipPieces(width, height);
+			
+			updateValidMoves(isWhite);
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -250,6 +260,10 @@ public class Board {
 	
 	public int getNumBlack() {
 		return numBlack;
+	}
+	
+	public int getNumValidMoves() {
+		return validMoves.size();
 	}
 	
 	private void flipPieces(int width, int height) {
@@ -310,6 +324,21 @@ public class Board {
 			
 		}
 		
+	}
+	
+	private void updateValidMoves(boolean isWhite) {
+		
+		validMoves = new ArrayList<Integer[]>();
+		
+		for (int w = 0; w < BOARD_SIZE; w++) {
+			for (int h = 0; h < BOARD_SIZE; h++) {
+				
+				if (isValidMove(w, h, isWhite)) {
+					validMoves.add(new Integer[] {w, h});
+				}
+				
+			}
+		}
 	}
 	
 	public void printBoard() {

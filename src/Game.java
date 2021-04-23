@@ -16,7 +16,7 @@ public class Game {
 		board.printBoard();
 		
 		boolean notDone = board.isFull();
-		while(!notDone) {
+		while(!notDone && board.getNumValidMoves() != 0) {
 			if(p1Turn) {
 				System.out.println("Current player turn: X");
 				player1.makeMove(board);
