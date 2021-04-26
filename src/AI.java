@@ -1,13 +1,24 @@
 
 public class AI extends Controller {
-
-	public AI() {
-		
+	
+	private int useHeuristic;
+	
+	public AI(boolean isWhite, int useHeuristic) {
+		this.isWhite = isWhite;
+		this.useHeuristic = useHeuristic;
 	}
 	
 	@Override
 	public void makeMove(Board b) {
-		// TODO Auto-generated method stub
+		
+		
+	}
+	
+	private void countingHeuristic() {
+		
+	}
+	
+	private void cornersHeuristic() {
 		
 	}
 

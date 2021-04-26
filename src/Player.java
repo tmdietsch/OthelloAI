@@ -1,8 +1,6 @@
 import java.util.Scanner;
 
 public class Player extends Controller {
-
-	boolean isWhite;
 	
 	Player(boolean isWhite) {
 		this.isWhite = isWhite;
