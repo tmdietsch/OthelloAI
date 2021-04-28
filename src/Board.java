@@ -62,6 +62,11 @@ public class Board {
 	public boolean isValidMove(int width, int height, boolean isWhite){
 		int matchingColor, enemy;
 		int currLoc;
+		
+		if(board[width][height] == 1 || board[width][height] == 0) {
+			return false;
+		}
+		
 		if(isWhite) {
 			matchingColor = WHITE;
 			enemy = BLACK;

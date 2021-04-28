@@ -13,22 +13,43 @@ public class Game {
 	
 	public void play() {
 		boolean p1Turn = true;
+		boolean skippedLastPlayer = false;
 		board.printBoard();
 		
-		boolean notDone = board.isFull();
-		while(!notDone && board.getNumValidMoves() != 0) {
-			if(p1Turn) {
-				System.out.println("Current player turn: X");
-				player1.makeMove(board);
+		boolean done = board.isFull();
+		while(!done) {
+			if(board.getNumValidMoves() != 0) {
+				if(p1Turn) {
+					System.out.println("Current player turn: X");
+					player1.makeMove(board);
+				}
+				else {
+					System.out.println("Current player turn: O");
+					player2.makeMove(board);
+				}
+				System.out.println("\n");
+				board.printBoard();
+				p1Turn = !p1Turn;
+				done = board.isFull();
+				skippedLastPlayer = false;
 			}
 			else {
-				System.out.println("Current player turn: O");
-				player2.makeMove(board);
+				if(!skippedLastPlayer) {
+					if(p1Turn) {
+						System.out.println("Player X has no avalible moves. Skipping turn.");
+					}
+					else {
+						System.out.println("Player O has no avalible moves. Skipping turn.");
+						
+					}
+					skippedLastPlayer = true;
+				}
+				else {
+					System.out.println("No more moves avalible. Ending game.");
+					done = true;
+					
+				}
 			}
-			System.out.println("\n");
-			board.printBoard();
-			p1Turn = !p1Turn;
-			notDone = board.isFull();
 		}
 		
 	}
