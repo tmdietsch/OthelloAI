@@ -54,6 +54,10 @@ public class Board {
 		
 	}
 	
+	public int getSpot(int x, int y) {
+		return board[x][y];
+	}
+	
 	public ArrayList<Integer[]> getValidMoves() {
 		
 		return validMoves;
