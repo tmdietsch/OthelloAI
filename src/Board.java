@@ -10,6 +10,7 @@ public class Board {
 	private int numWhite;
 	private int numBlack;
 	
+	private int[] previousMove;	
 	private int[][] board;
 	//HashMap<Integer, ArrayList<Integer>> validMoves;
 	ArrayList<Integer[]> validMoves;
@@ -36,12 +37,17 @@ public class Board {
 		
 		updateValidMoves(true);
 		
+		previousMove = null;
 	}
 	
 	Board(Board orig){
 		
 		board = new int[BOARD_SIZE][BOARD_SIZE];
 		validMoves = new ArrayList<Integer[]>();//new HashMap<Integer, ArrayList<Integer>>();
+		
+		for (Integer[] space : validMoves) {
+			validMoves.add(space);
+		}
 		
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			for(int j = 0; j < BOARD_SIZE; j++) {
@@ -52,6 +58,7 @@ public class Board {
 		numWhite = orig.numWhite;
 		numBlack = orig.numBlack;
 		
+		previousMove = orig.previousMove;
 	}
 	
 	public int getSpot(int x, int y) {
@@ -251,7 +258,9 @@ public class Board {
 			}
 			flipPieces(width, height);
 			
-			updateValidMoves(isWhite);
+			updateValidMoves(!isWhite);
+			
+			previousMove = new int[] {width, height};
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -273,6 +282,10 @@ public class Board {
 	
 	public int getNumValidMoves() {
 		return validMoves.size();
+	}
+	
+	public int[] getPreviousMove() {
+		return previousMove;
 	}
 	
 	private void flipPieces(int width, int height) {

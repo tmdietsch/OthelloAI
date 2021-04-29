@@ -2,34 +2,67 @@ import java.util.ArrayList;
 
 public class AI extends Controller {
 	
-	private int useHeuristic;
 	private final int MAX_DEPTH = 6;
 	private boolean smart;
 	
-	public AI(boolean isWhite, int useHeuristic, boolean isSmart) {
+	public AI(boolean isWhite, boolean isSmart) {
 		this.isWhite = isWhite;
-		this.useHeuristic = useHeuristic;
 		smart = isSmart;
 	}
 	
 	@Override
-	public void makeMove(Board b) {
+	public void makeMove(Board state) {
 		
+		int[] thing = alphaBetaSearch(state);
+		state.move(thing[0], thing[1], isWhite);
+		
+	}
+	
+	private int[] alphaBetaSearch(Board state) {
+		
+		int alpha = Integer.MIN_VALUE;
+		int beta = Integer.MAX_VALUE;
+		int currDepth = 1;
+
+		int v = Integer.MIN_VALUE;
+		ArrayList<Board> actions = getActions(state, true);
+		
+		int[] temps = actions.get(1).getPreviousMove();
+		
+		System.out.println(temps[0] + " " + temps[1]);
+		
+		
+		Board bestBoard = null;
+		
+		for(Board a: actions) {
+			int temp = minValue(a, alpha, beta, currDepth + 1);
+			
+			if (v < temp) {
+				v = temp;
+				bestBoard = a;
+			}
+			
+			if(v >= beta)
+				return a.getPreviousMove();
+			alpha = Math.max(alpha, v);
+		}
+		
+		return bestBoard.getPreviousMove();
 		
 	}
 	
 	private int maxValue(Board state, int alpha, int beta, int currDepth) {
 		if(currDepth == MAX_DEPTH) {
 			if(smart)
-				return countingHeuristic(state, false) + cornersHeuristic(state, false);
-			return countingHeuristic(state, false);
+				return countingHeuristic(state, true) + cornersHeuristic(state, true);
+			return countingHeuristic(state, true);
 		}
 		
 		int v = Integer.MIN_VALUE;
-		ArrayList<Board> actions = getActions(state, false);
+		ArrayList<Board> actions = getActions(state, true);
 		
 		for(Board a: actions) {
-			v = Math.max(v, minValue(a, alpha, beta, currDepth+1));
+			v = Math.max(v, minValue(a, alpha, beta, currDepth + 1));
 			if(v >= beta)
 				return v;
 			alpha = Math.max(alpha, v);
@@ -49,7 +82,7 @@ public class AI extends Controller {
 		ArrayList<Board> actions = getActions(state, false);
 		
 		for(Board a: actions) {
-			v = Math.min(v, maxValue(a, alpha, beta, currDepth+1));
+			v = Math.min(v, maxValue(a, alpha, beta, currDepth + 1));
 			if(v <= alpha)
 				return v;
 			beta = Math.min(beta, v);
@@ -109,7 +142,8 @@ public class AI extends Controller {
 		ArrayList<Integer[]> possibleActions = b.getValidMoves();
 		Board temp;
 		
-		for(Integer[] i: possibleActions) {
+		for(Integer[] i : possibleActions) {
+			
 			temp = new Board(b);
 			if(isMax) {
 				temp.move(i[0], i[1], isWhite);

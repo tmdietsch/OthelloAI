@@ -10,7 +10,7 @@ public class Main {
 //		board.printBoard();
 		
 		Controller p1 = new Player(true);
-		Controller p2 = new Player(false);
+		Controller p2 = new AI(false, false);
 		Game othello = new Game(p1, p2);
 		
 		othello.play();
