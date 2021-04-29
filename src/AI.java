@@ -19,7 +19,23 @@ public class AI extends Controller {
 	}
 	
 	private int maxValue(Board state, int alpha, int beta, int currDepth) {
-		return 0;
+		if(currDepth == MAX_DEPTH) {
+			if(smart)
+				return countingHeuristic(state, false) + cornersHeuristic(state, false);
+			return countingHeuristic(state, false);
+		}
+		
+		int v = Integer.MIN_VALUE;
+		ArrayList<Board> actions = getActions(state, false);
+		
+		for(Board a: actions) {
+			v = Math.max(v, minValue(a, alpha, beta, currDepth+1));
+			if(v >= beta)
+				return v;
+			alpha = Math.max(alpha, v);
+		}
+		
+		return v;
 	}
 	
 	private int minValue(Board state, int alpha, int beta, int currDepth) {
@@ -44,88 +60,46 @@ public class AI extends Controller {
 	
 	private int countingHeuristic(Board board, boolean isMax) {
 		
-		if(isMax) {
-			if(isWhite) {
-				return board.getNumWhite();
-			}
-			
-			return board.getNumBlack();
-		}
-		else {
-			if(isWhite) {
-				return board.getNumBlack();
-			}
-			
+		if(isWhite) {
 			return board.getNumWhite();
 		}
 			
+		return board.getNumBlack();	
 	}
 		
 	
 	private int cornersHeuristic(Board board, boolean isMax) {
 		int h = 0;
-		int s;
 		
-		if(isMax) {
-			if(isWhite) {
-				if(board.getSpot(0, 0) == 0) {
-					h+=10;
-				}
-				if(board.getSpot(0, 7) == 0) {
-					h+=10;
-				}
-				if(board.getSpot(7, 0) == 0) {
-					h+=10;
-				}
-				if(board.getSpot(7, 7) == 0) {
-					h+=10;
-				}
+		if(isWhite) {
+			if(board.getSpot(0, 0) == 0) {
+				h+=10;
 			}
-			else {
-				if(board.getSpot(0, 0) == 1) {
-					h+=10;
-				}
-				if(board.getSpot(0, 7) == 1) {
-					h+=10;
-				}
-				if(board.getSpot(7, 0) == 1) {
-					h+=10;
-				}
-				if(board.getSpot(7, 7) == 1) {
-					h+=10;
-				}
+			if(board.getSpot(0, 7) == 0) {
+				h+=10;
+			}
+			if(board.getSpot(7, 0) == 0) {
+				h+=10;
+			}
+			if(board.getSpot(7, 7) == 0) {
+				h+=10;
 			}
 		}
 		else {
-			if(!isWhite) {
-				if(board.getSpot(0, 0) == 0) {
-					h+=10;
-				}
-				if(board.getSpot(0, 7) == 0) {
-					h+=10;
-				}
-				if(board.getSpot(7, 0) == 0) {
-					h+=10;
-				}
-				if(board.getSpot(7, 7) == 0) {
-					h+=10;
-				}
+			if(board.getSpot(0, 0) == 1) {
+				h+=10;
 			}
-			else {
-				if(board.getSpot(0, 0) == 1) {
-					h+=10;
-				}
-				if(board.getSpot(0, 7) == 1) {
-					h+=10;
-				}
-				if(board.getSpot(7, 0) == 1) {
-					h+=10;
-				}
-				if(board.getSpot(7, 7) == 1) {
-					h+=10;
-				}
+			if(board.getSpot(0, 7) == 1) {
+				h+=10;
+			}
+			if(board.getSpot(7, 0) == 1) {
+				h+=10;
+			}
+			if(board.getSpot(7, 7) == 1) {
+				h+=10;
 			}
 		}
+		
 		
 		return h;
 	}
