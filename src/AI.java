@@ -27,7 +27,7 @@ public class AI extends Controller {
 		int v = Integer.MIN_VALUE;
 		ArrayList<Board> actions = getActions(state, true);
 		
-		int[] temps = actions.get(1).getPreviousMove();
+		int[] temps = actions.get(0).getPreviousMove();
 		
 		System.out.println(temps[0] + " " + temps[1]);
 		
