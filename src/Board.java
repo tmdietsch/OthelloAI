@@ -268,6 +268,12 @@ public class Board {
 		
 	}
 	
+	public void skipMove(boolean isWhite) {
+		previousMove = new int[] {-1, -1};
+		
+		updateValidMoves(!isWhite);
+	}
+	
 	public boolean isFull() {
 		return (numWhite + numBlack == BOARD_SIZE * BOARD_SIZE);
 	}

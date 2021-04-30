@@ -14,7 +14,9 @@ public class AI extends Controller {
 	public void makeMove(Board state) {
 		
 		int[] thing = alphaBetaSearch(state);
-		state.move(thing[0], thing[1], isWhite);
+		
+		if (thing[0] != -1)
+			state.move(thing[0], thing[1], isWhite);
 		
 	}
 	
@@ -27,10 +29,9 @@ public class AI extends Controller {
 		int v = Integer.MIN_VALUE;
 		ArrayList<Board> actions = getActions(state, true);
 		
-		int[] temps = actions.get(0).getPreviousMove();
-		
-		System.out.println(temps[0] + " " + temps[1]);
-		
+//		int[] temps = actions.get(0).getPreviousMove();
+//		
+//		System.out.println(temps[0] + " " + temps[1]);
 		
 		Board bestBoard = null;
 		
@@ -47,15 +48,25 @@ public class AI extends Controller {
 			alpha = Math.max(alpha, v);
 		}
 		
+//		if (bestBoard == null) {
+//			bestBoard = new Board(state);
+//			bestBoard.skipMove(isWhite);
+//		}
+		
 		return bestBoard.getPreviousMove();
 		
 	}
 	
 	private int maxValue(Board state, int alpha, int beta, int currDepth) {
+		if(state.isFull()) {
+			return countingHeuristic(state, true);
+		}
+		
 		if(currDepth == MAX_DEPTH) {
 			if(smart)
 				return countingHeuristic(state, true) + cornersHeuristic(state, true);
-			return countingHeuristic(state, true);
+			else
+				return countingHeuristic(state, true);
 		}
 		
 		int v = Integer.MIN_VALUE;
@@ -72,10 +83,15 @@ public class AI extends Controller {
 	}
 	
 	private int minValue(Board state, int alpha, int beta, int currDepth) {
+		if(state.isFull()) {
+			return countingHeuristic(state, true);
+		}
+		
 		if(currDepth == MAX_DEPTH) {
 			if(smart)
 				return countingHeuristic(state, false) + cornersHeuristic(state, false);
-			return countingHeuristic(state, false);
+			else
+				return countingHeuristic(state, false);
 		}
 		
 		int v = Integer.MAX_VALUE;
@@ -94,10 +110,10 @@ public class AI extends Controller {
 	private int countingHeuristic(Board board, boolean isMax) {
 		
 		if(isWhite) {
-			return board.getNumWhite();
+			return board.getNumWhite() - board.getNumBlack();
 		}
 			
-		return board.getNumBlack();	
+		return board.getNumBlack() - board.getNumWhite();
 	}
 		
 	
@@ -143,6 +159,8 @@ public class AI extends Controller {
 		Board temp;
 		
 		for(Integer[] i : possibleActions) {
+			
+			//System.out.println("dumb: " + i[0] + " " + i[1]);
 			
 			temp = new Board(b);
 			if(isMax) {
