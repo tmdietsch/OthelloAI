@@ -59,28 +59,35 @@ public class AI extends Controller {
 	}
 	
 	private int maxValue(Board state, int alpha, int beta, int currDepth) {
+		//stop if board is full
 		if(state.isFull()) {
 			return countingHeuristic(state, true);
 		}
 		
+		//if we have gone as far as we wanted to stop
 		if(currDepth == maxDepth) {
+			//if smart AI return this
 			if(smart)
 				return countingHeuristic(state, true) + cornersHeuristic(state, true);
+			//if dumb AI return this
 			else
 				return countingHeuristic(state, true);
 		}
 		
+		//worst possible value
 		int v = Integer.MIN_VALUE;
 		ArrayList<Board> actions = getActions(state, true);
 		
 		if (actions.size() != 0) {
 			for(Board a: actions) {
 				v = Math.max(v, minValue(a, alpha, beta, currDepth + 1));
+				//prune if possible
 				if(v >= beta)
 					return v;
 				alpha = Math.max(alpha, v);
 			}
 		}
+		//if no possible moves go to the next state
 		else {
 			Board a = new Board(state);
 			a.skipMove(isWhite);
@@ -91,28 +98,35 @@ public class AI extends Controller {
 	}
 	
 	private int minValue(Board state, int alpha, int beta, int currDepth) {
+		//stop if board is full
 		if(state.isFull()) {
 			return countingHeuristic(state, false);
 		}
 		
+		//if we have gone as far as we wanted to stop
 		if(currDepth == maxDepth) {
+			//if smart AI return this
 			if(smart)
 				return countingHeuristic(state, false) + cornersHeuristic(state, false);
+			//If dumb AI return this
 			else
 				return countingHeuristic(state, false);
 		}
 		
+		//worst possible value
 		int v = Integer.MAX_VALUE;
 		ArrayList<Board> actions = getActions(state, false);
 		
 		if (actions.size() != 0) {
 			for(Board a: actions) {
 				v = Math.min(v, maxValue(a, alpha, beta, currDepth + 1));
+				//prune if possible
 				if(v <= alpha)
 					return v;
 				beta = Math.min(beta, v);
 			}
 		}
+		//if no possible moves go to the next state
 		else {
 			Board a = new Board(state);
 			a.skipMove(!isWhite);
@@ -122,6 +136,7 @@ public class AI extends Controller {
 		return v;
 	}
 	
+	//returns the difference in changed pieces
 	private int countingHeuristic(Board board, boolean isMax) {
 		
 		if(isWhite) {
@@ -131,7 +146,7 @@ public class AI extends Controller {
 		return board.getNumBlack() - board.getNumWhite();
 	}
 		
-	
+	//adds 10 to the h value for every corner piece
 	private int cornersHeuristic(Board board, boolean isMax) {
 		int h = 0;
 		
@@ -168,15 +183,13 @@ public class AI extends Controller {
 		return h;
 	}
 
+	//returns an ArrayList of all the possible states
 	private ArrayList<Board> getActions(Board b, boolean isMax){
 		ArrayList<Board> actions = new ArrayList<Board>();
 		ArrayList<Integer[]> possibleActions = b.getValidMoves();
 		Board temp;
 		
 		for(Integer[] i : possibleActions) {
-			
-			//System.out.println("dumb: " + i[0] + " " + i[1]);
-			
 			temp = new Board(b);
 			if(isMax) {
 				temp.move(i[0], i[1], isWhite);
