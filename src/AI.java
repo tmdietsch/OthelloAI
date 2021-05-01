@@ -81,8 +81,11 @@ public class AI extends Controller {
 				alpha = Math.max(alpha, v);
 			}
 		}
-		else
-			return countingHeuristic(state, true) + cornersHeuristic(state, true);
+		else {
+			Board a = new Board(state);
+			a.skipMove(isWhite);
+			return minValue(a, alpha, beta, currDepth + 1);
+		}
 		
 		return v;
 	}
@@ -110,8 +113,11 @@ public class AI extends Controller {
 				beta = Math.min(beta, v);
 			}
 		}
-		else
-			return countingHeuristic(state, false) + cornersHeuristic(state, false);
+		else {
+			Board a = new Board(state);
+			a.skipMove(!isWhite);
+			return maxValue(a, alpha, beta, currDepth + 1);
+		}
 		
 		return v;
 	}

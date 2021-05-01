@@ -9,8 +9,8 @@ public class Main {
 //		board.move(0, 2, true);
 //		board.printBoard();
 		
-		Controller p1 = new AI(true, true, 6);
-		Controller p2 = new AI(false, true, 7);
+		Controller p1 = new AI(true, true, 4);
+		Controller p2 = new AI(false, true, 4);
 		Game othello = new Game(p1, p2);
 		
 		othello.play();
