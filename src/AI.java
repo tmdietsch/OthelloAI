@@ -2,12 +2,13 @@ import java.util.ArrayList;
 
 public class AI extends Controller {
 	
-	private final int MAX_DEPTH = 6;
+	private int maxDepth;
 	private boolean smart;
 	
-	public AI(boolean isWhite, boolean isSmart) {
+	public AI(boolean isWhite, boolean isSmart, int maxDepth) {
 		this.isWhite = isWhite;
 		smart = isSmart;
+		this.maxDepth = maxDepth;
 	}
 	
 	@Override
@@ -48,10 +49,10 @@ public class AI extends Controller {
 			alpha = Math.max(alpha, v);
 		}
 		
-//		if (bestBoard == null) {
-//			bestBoard = new Board(state);
-//			bestBoard.skipMove(isWhite);
-//		}
+		if (bestBoard == null) {
+			state.skipMove(isWhite);
+			bestBoard = new Board(state);
+		}
 		
 		return bestBoard.getPreviousMove();
 		
@@ -62,7 +63,7 @@ public class AI extends Controller {
 			return countingHeuristic(state, true);
 		}
 		
-		if(currDepth == MAX_DEPTH) {
+		if(currDepth == maxDepth) {
 			if(smart)
 				return countingHeuristic(state, true) + cornersHeuristic(state, true);
 			else
@@ -87,7 +88,7 @@ public class AI extends Controller {
 			return countingHeuristic(state, true);
 		}
 		
-		if(currDepth == MAX_DEPTH) {
+		if(currDepth == maxDepth) {
 			if(smart)
 				return countingHeuristic(state, false) + cornersHeuristic(state, false);
 			else
