@@ -73,19 +73,23 @@ public class AI extends Controller {
 		int v = Integer.MIN_VALUE;
 		ArrayList<Board> actions = getActions(state, true);
 		
-		for(Board a: actions) {
-			v = Math.max(v, minValue(a, alpha, beta, currDepth + 1));
-			if(v >= beta)
-				return v;
-			alpha = Math.max(alpha, v);
+		if (actions.size() != 0) {
+			for(Board a: actions) {
+				v = Math.max(v, minValue(a, alpha, beta, currDepth + 1));
+				if(v >= beta)
+					return v;
+				alpha = Math.max(alpha, v);
+			}
 		}
+		else
+			return countingHeuristic(state, true) + cornersHeuristic(state, true);
 		
 		return v;
 	}
 	
 	private int minValue(Board state, int alpha, int beta, int currDepth) {
 		if(state.isFull()) {
-			return countingHeuristic(state, true);
+			return countingHeuristic(state, false);
 		}
 		
 		if(currDepth == maxDepth) {
@@ -98,12 +102,16 @@ public class AI extends Controller {
 		int v = Integer.MAX_VALUE;
 		ArrayList<Board> actions = getActions(state, false);
 		
-		for(Board a: actions) {
-			v = Math.min(v, maxValue(a, alpha, beta, currDepth + 1));
-			if(v <= alpha)
-				return v;
-			beta = Math.min(beta, v);
+		if (actions.size() != 0) {
+			for(Board a: actions) {
+				v = Math.min(v, maxValue(a, alpha, beta, currDepth + 1));
+				if(v <= alpha)
+					return v;
+				beta = Math.min(beta, v);
+			}
 		}
+		else
+			return countingHeuristic(state, false) + cornersHeuristic(state, false);
 		
 		return v;
 	}

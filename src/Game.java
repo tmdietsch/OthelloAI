@@ -43,6 +43,8 @@ public class Game {
 						
 					}
 					skippedLastPlayer = true;
+					board.skipMove(p1Turn);
+					p1Turn = !p1Turn;
 				}
 				else {
 					System.out.println("No more moves avalible. Ending game.");
