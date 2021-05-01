@@ -321,12 +321,15 @@ public class Board {
 		return previousMove;
 	}
 	
+	//Flips all taken pieces around a piece after a move is made
+	//Piece is described in width and height
 	private void flipPieces(int width, int height) {
 		
 		int samePiece;
 		int oppositePiece;
 		boolean isWhite;
 		
+		//Set same and opposite piece based on where we start
 		if (board[width][height] == 0) {
 			samePiece = 0;
 			oppositePiece = 1;
@@ -338,26 +341,32 @@ public class Board {
 			isWhite = false;
 		}
 		
+		//Loops go in each direction: up-left, up, up-right, left, right, etc.
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				
+				//How far in each direction to check
 				int distance = 1;
 				
+				//Used to check if we are out of bounds of the array
 				try {
 					
+					//Go in a direction till find a blank or same piece
 					while(board[width + (i * distance)][height + (j * distance)] == oppositePiece) {
 						
-						distance++;
+						distance++;	//Go up one more
 						
 					}
 					
+					//Found a same piece?
 					if (board[width + (i * distance)][height + (j * distance)] == samePiece) {
 						
+						//Start backtracking and flip all pieces as you go
 						distance--;
 						while (distance != 0) {
 							
+							//Change piece to your color
 							board[width + (i * distance)][height + (j * distance)] = samePiece;
-							distance--;
 							if(isWhite) {
 								numWhite++;
 								numBlack--;
@@ -367,8 +376,9 @@ public class Board {
 								numBlack++;
 							}
 							
+							distance--;	//Backtrack for next iteration
+							
 						}
-						
 						
 					}
 					
