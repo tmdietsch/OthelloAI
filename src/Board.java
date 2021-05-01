@@ -3,23 +3,24 @@ import java.util.HashMap;
 
 public class Board {
 
-	private final int BOARD_SIZE = 8;
+	private final int BOARD_SIZE = 8; //8x8 board
 	private final int WHITE = 0;
 	private final int BLACK = 1;
 	private final int EMPTY = -1;
-	private int numWhite;
-	private int numBlack;
+	private int numWhite;	//number of white pieces on the board
+	private int numBlack;	//number of black pieces on the board
 	
-	private int[] previousMove;	
+	private int[] previousMove;	//the move taken in the last turn
 	private int[][] board;
-	//HashMap<Integer, ArrayList<Integer>> validMoves;
-	ArrayList<Integer[]> validMoves;
+	ArrayList<Integer[]> validMoves;	//moves available to the current player
 	
+	//creates default board
 	Board() {
 		
 		board = new int[BOARD_SIZE][BOARD_SIZE];
 		validMoves = new ArrayList<Integer[]>();
 		
+		//Set all board spaces to empty
 		for(int i = 0; i < BOARD_SIZE; i++) {
 			for(int j = 0; j < BOARD_SIZE; j++) {
 				board[i][j] = EMPTY;
@@ -40,6 +41,7 @@ public class Board {
 		previousMove = null;
 	}
 	
+	//creates copy of given board
 	Board(Board orig){
 		
 		board = new int[BOARD_SIZE][BOARD_SIZE];
@@ -61,23 +63,27 @@ public class Board {
 		previousMove = orig.previousMove;
 	}
 	
+	//return value in given spot
 	public int getSpot(int x, int y) {
 		return board[x][y];
 	}
 	
+	//returns the valid moves array
 	public ArrayList<Integer[]> getValidMoves() {
-		
 		return validMoves;
 	}
 	
+	//checks if it is a legal move
 	public boolean isValidMove(int width, int height, boolean isWhite){
 		int matchingColor, enemy;
 		int currLoc;
 		
+		//if a piece is on the board then return false
 		if(board[width][height] == 1 || board[width][height] == 0) {
 			return false;
 		}
 		
+		//check who's turn it is
 		if(isWhite) {
 			matchingColor = WHITE;
 			enemy = BLACK;
@@ -86,6 +92,8 @@ public class Board {
 			matchingColor = BLACK;
 			enemy = WHITE;
 		}
+		
+		//check left
 		int x = width;
 		int y = height;
 		x--;
@@ -105,6 +113,7 @@ public class Board {
 			x--;
 		}
 		
+		//checks upper left
 		x = width;
 		x--;
 		y++;
@@ -124,6 +133,8 @@ public class Board {
 			x--;
 			y++;
 		}
+		
+		//checks above
 		x = width;
 		y = height;
 		y++;
@@ -142,6 +153,8 @@ public class Board {
 			
 			y++;
 		}
+		
+		//checks upper right
 		x = width;
 		y = height;
 		x++;
@@ -163,6 +176,7 @@ public class Board {
 			y++;
 		}
 		
+		//checks right
 		x = width;
 		y = height;
 		x++;
@@ -182,6 +196,7 @@ public class Board {
 			x++;
 		}
 		
+		//checks lower right
 		x = width;
 		y = height;
 		x++;
@@ -203,6 +218,7 @@ public class Board {
 			y--;
 		}
 		
+		//checks below
 		x = width;
 		y = height;
 		y--;
@@ -222,6 +238,7 @@ public class Board {
 			y--;
 		}
 		
+		//checks lower left
 		x = width;
 		y = height;
 		y--;
@@ -246,8 +263,10 @@ public class Board {
 		return false;
 	}
 	
+	//attempts to place the piece at x = width and y = height
 	public void move(int width, int height, boolean isWhite) {
 		
+		//if legal move place the piece and increment the correct number
 		if (isValidMove(width, height, isWhite)) {
 			board[width][height] = isWhite ? WHITE : BLACK;
 			if(isWhite) {
@@ -256,10 +275,12 @@ public class Board {
 			else {
 				numBlack++;
 			}
+			
 			flipPieces(width, height);
 			
 			updateValidMoves(!isWhite);
 			
+			//set as the last taken move
 			previousMove = new int[] {width, height};
 		}
 		else {
@@ -268,28 +289,34 @@ public class Board {
 		
 	}
 	
+	//adjust for skipped move
 	public void skipMove(boolean isWhite) {
 		previousMove = new int[] {-1, -1};
 		
 		updateValidMoves(!isWhite);
 	}
 	
+	//checks if board is full of pieces
 	public boolean isFull() {
 		return (numWhite + numBlack == BOARD_SIZE * BOARD_SIZE);
 	}
 	
+	//return number of white pieces 
 	public int getNumWhite() {
 		return numWhite;
 	}
 	
+	//return number of black pieces
 	public int getNumBlack() {
 		return numBlack;
 	}
 	
+	//returns how many moves are available to the current player
 	public int getNumValidMoves() {
 		return validMoves.size();
 	}
 	
+	//returns the last move taken
 	public int[] getPreviousMove() {
 		return previousMove;
 	}
@@ -354,6 +381,7 @@ public class Board {
 		
 	}
 	
+	//checks for valid moves at each spot on the board
 	private void updateValidMoves(boolean isWhite) {
 		
 		validMoves = new ArrayList<Integer[]>();
@@ -369,6 +397,7 @@ public class Board {
 		}
 	}
 	
+	//print the board to the console
 	public void printBoard() {
 		System.out.println("White score: " + getNumWhite());
 		System.out.println("Black score: " + getNumBlack());
