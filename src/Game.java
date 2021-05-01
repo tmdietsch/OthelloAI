@@ -53,7 +53,20 @@ public class Game {
 				}
 			}
 		}
+		endGame();
 		
 	}
+
 	
+	public void endGame() {
+		if(board.getNumWhite() > board.getNumBlack()) {
+			System.out.println("White wins!");
+		}
+		else if(board.getNumBlack() > board.getNumWhite()) {
+			System.out.println("Black wins!");
+		}
+		else {
+			System.out.println("Tie!");
+		}
+	}
 }
