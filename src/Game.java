@@ -11,6 +11,7 @@ public class Game {
 		board = new Board();		
 	}
 	
+	//plays the game
 	public int play(boolean printProgress) {
 		boolean p1Turn = true;
 		boolean skippedLastPlayer = false;
@@ -21,12 +22,14 @@ public class Game {
 		boolean done = board.isFull();
 		while(!done) {
 			if(board.getNumValidMoves() != 0) {
+				//player one makes a move
 				if(p1Turn) {
 					if (printProgress)
 						System.out.println("Current player turn: X");
 					
 					player1.makeMove(board);
 				}
+				//player 2 makes a move
 				else {
 					if (printProgress)
 						System.out.println("Current player turn: O");
@@ -39,11 +42,13 @@ public class Game {
 					board.printBoard();
 				}
 				
+				//check and set up the board for next turn
 				p1Turn = !p1Turn;
 				done = board.isFull();
 				skippedLastPlayer = false;
 			}
 			else {
+				//skip to the next player if first occurrence of no possible moves
 				if(!skippedLastPlayer) {
 					if (printProgress) {
 						if(p1Turn) {
@@ -51,7 +56,6 @@ public class Game {
 						}
 						else {
 							System.out.println("Player O has no avalible moves. Skipping turn.");
-							
 						}
 					}
 					
@@ -59,6 +63,7 @@ public class Game {
 					board.skipMove(p1Turn);
 					p1Turn = !p1Turn;
 				}
+				//if both players can't move end the game
 				else {
 					if (printProgress)
 						System.out.println("No more moves avalible. Ending game.");
@@ -67,11 +72,14 @@ public class Game {
 				}
 			}
 		}
+		//return the results of the game
 		return endGame(printProgress);
 		
 	}
 
 	
+	//print the results of the match to the screen if printProgress = true
+	//return 0 if white wins, return 1 if black wins, and return 2 if tie
 	private int endGame(boolean printProgress) {
 		if(board.getNumWhite() > board.getNumBlack()) {
 			if (printProgress)
