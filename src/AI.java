@@ -5,37 +5,40 @@ public class AI extends Controller {
 	private int maxDepth;
 	private boolean smart;
 	
+	//Constructor
 	public AI(boolean isWhite, boolean isSmart, int maxDepth) {
 		this.isWhite = isWhite;
 		smart = isSmart;
 		this.maxDepth = maxDepth;
 	}
 	
+	//Overridden method which determines the move made by the AI
 	@Override
 	public void makeMove(Board state) {
 		
 		int[] thing = alphaBetaSearch(state);
 		
+		//make move if it isn't invalid
 		if (thing[0] != -1)
 			state.move(thing[0], thing[1], isWhite);
 		
 	}
 	
+	//Starting method for the alpha-beta search
 	private int[] alphaBetaSearch(Board state) {
 		
+		//Setting initial values
 		int alpha = Integer.MIN_VALUE;
 		int beta = Integer.MAX_VALUE;
-		int currDepth = 1;
-
+		int currDepth = 1;	//start at 1 since we are already 1 deep
 		int v = Integer.MIN_VALUE;
-		ArrayList<Board> actions = getActions(state, true);
 		
-//		int[] temps = actions.get(0).getPreviousMove();
-//		
-//		System.out.println(temps[0] + " " + temps[1]);
+		//Getting all available actions in the state
+		ArrayList<Board> actions = getActions(state, true);
 		
 		Board bestBoard = null;
 		
+		//for each board in actions, find the min value
 		for(Board a: actions) {
 			int temp = minValue(a, alpha, beta, currDepth + 1);
 			
@@ -49,11 +52,14 @@ public class AI extends Controller {
 			alpha = Math.max(alpha, v);
 		}
 		
+		//there are no available moves, skip this turn
+		//sets the move to (-1, -1), which counts as skipping this turn
 		if (bestBoard == null) {
 			state.skipMove(isWhite);
 			bestBoard = new Board(state);
 		}
 		
+		//returning the previous move made
 		return bestBoard.getPreviousMove();
 		
 	}
